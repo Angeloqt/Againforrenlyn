@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message from Angelo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            50: '#fff9fa',
+                            100: '#ffeef2',
+                            200: '#ffdbe4',
+                            300: '#ffb8cb',
+                            400: '#ff8ba7',
+                            500: '#ff6288',
+                            600: '#e03a67'
+                        },
+                        cream: {
+                            50: '#fffdfa',
+                            100: '#fcf8f2',
+                            200: '#f7eee1'
+                        },
+                        blush: {
+                            50: '#fff5f7',
+                            100: '#ffe4e9',
+                            200: '#ffccd5',
+                            500: '#f43f5e',
+                            700: '#be123c'
+                        },
+                        softgold: {
+                            300: '#fef08a',
+                            400: '#fde047',
+                            500: '#eab308'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Montserrat"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern Soft Pastel Styling & Animations */
+        body {
+            background-color: #fff5f7;
+            color: #4a3843;
+            overflow-x: hidden;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ambient Pastel Lighting Background */
+        .ambient-bg {
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(255, 222, 233, 0.85) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(255, 203, 219, 0.75) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 253, 250, 0.95) 0%, transparent 100%),
+                radial-gradient(circle at 80% 20%, rgba(254, 240, 138, 0.4) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* Soft Bright Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 50px rgba(255, 182, 193, 0.28), 0 4px 20px rgba(255, 255, 255, 0.9) inset;
+        }
+
+        .glass-card-glow {
+            box-shadow: 0 0 45px rgba(255, 184, 203, 0.45), inset 0 0 20px rgba(255, 255, 255, 0.95);
+        }
+
+        /* Custom Scrollbar for Letter */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 228, 233, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 139, 167, 0.5);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 98, 136, 0.8);
+        }
+
+        /* Step Transitions */
+        .step-panel {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(22px) scale(0.97);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .step-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* Cute Soft Shimmer Effect */
+        .cute-shimmer {
+            background: linear-gradient(135deg, #e03a67 0%, #ff6288 40%, #f43f5e 70%, #d97706 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Animated Floating Canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Cute Glow Button */
+        .btn-glow {
+            position: relative;
+            transition: all 0.35s ease;
+        }
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #ff8ba7, #fde047, #ff6288);
+            border-radius: 9999px;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(8px);
+            transition: opacity 0.35s ease;
+        }
+        .btn-glow:hover::after {
+            opacity: 0.85;
+        }
+
+        /* Subtitle Animations */
+        .lyric-text {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lyric-enter {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            filter: blur(8px);
+        }
+        .lyric-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
+        }
+        .lyric-exit {
+            opacity: 0;
+            transform: translateY(-20px) scale(1.03);
+            filter: blur(8px);
+        }
+
+        /* Cute Romantic Input styling */
+        .romantic-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 184, 203, 0.7);
+            color: #5c3b4d;
+            transition: all 0.3s ease;
+        }
+        .romantic-input:focus {
+            border-color: rgba(255, 98, 136, 0.9);
+            box-shadow: 0 0 20px rgba(255, 184, 203, 0.6);
+            outline: none;
+        }
+
+        /* Alert Modal Transition */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+        }
+        .modal-active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    </style>
+</head>
+<body class="h-full min-h-screen ambient-bg flex flex-col justify-between overflow-hidden relative select-none font-sans">
+
+    <!-- Floating Background Canvas for Pastel Particles & Hearts -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Top Navigation / Music Control Bar -->
+    <header class="relative z-20 w-full px-6 py-5 max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center space-x-2.5 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full border border-white/90 shadow-sm">
+            <span class="w-2.5 h-2.5 rounded-full bg-pastel-500 animate-ping"></span>
+            <span class="font-semibold text-xs tracking-wider uppercase text-pastel-600">For My TOTGA</span>
+        </div>
+
+        <!-- Audio Player Toggle Widget -->
+        <div class="flex items-center gap-3 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/90 shadow-sm text-xs">
+            <button id="toggleAudioBtn" onclick="toggleAudioPlayback()" class="text-pastel-600 hover:text-pastel-500 transition-colors focus:outline-none flex items-center gap-2 font-medium">
+                <i id="audioIcon" class="fa-solid fa-music"></i>
+                <span id="audioStatusText" class="hidden sm:inline uppercase text-[10px] tracking-widest font-semibold">Play Music</span>
+            </button>
+            <div id="equalizer" class="flex items-end gap-1 h-3 opacity-60">
+                <span class="w-0.5 bg-pastel-500 h-1 transition-all duration-300"></span>
+                <span class="w-0.5 bg-pastel-500 h-3 transition-all duration-300"></span>
+                <span class="w-0.5 bg-pastel-500 h-2 transition-all duration-300"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Background Music Tag -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="tonight.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full flex-1 max-w-5xl mx-auto px-4 py-4 flex items-center justify-center">
+
+        <!-- STEP 1: NAME CONFIRMATION PAGE -->
+        <section id="step1" class="step-panel active">
+            <div class="glass-card glass-card-glow p-8 md:p-12 rounded-3xl max-w-xl w-full text-center relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-36 h-36 bg-pastel-300/40 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-36 h-36 bg-softgold-300/40 rounded-full blur-2xl"></div>
+
+                <div class="mb-6 inline-block p-4 rounded-full bg-pastel-100 border border-pastel-200 text-pastel-500 shadow-sm">
+                    <i class="fa-solid fa-heart text-3xl animate-pulse"></i>
+                </div>
+
+                <h1 class="font-serif font-bold text-3xl md:text-4xl mb-3 cute-shimmer tracking-tight">
+                    Hello Whiskers💕
+                </h1>
+                <p class="text-gray-600 text-sm font-normal mb-8 leading-relaxed max-w-sm mx-auto">
+
+Welcome to this little space made with love. Every part of this website holds a special message and a little piece of my heart.
+
+Take your time exploring each section, enjoy the music by clicking the music logo, and read every message as you go. In the Dynamic Lyric Player, you can move through different messages using the next and previous buttons, with each one sharing a different feeling and thought.
+
+There’s no need to rush. Just enjoy the little moments, feel the words, and let this website tell you what’s sometimes difficult to say. 💌
+
+                </p>
+
+                <form id="nameForm" onsubmit="event.preventDefault(); goToStep(2);" class="space-y-6">
+                    <div class="relative max-w-md mx-auto">
+                        <input 
+                            type="text" 
+                            id="herNameInput" 
+                            value="" 
+                            placeholder="Enter your name..." 
+                            required
+                            class="romantic-input w-full px-6 py-4 rounded-2xl text-center text-base md:text-lg font-semibold placeholder-pastel-300 focus:outline-none shadow-inner"
+                        >
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-pastel-400 font-medium italic pointer-events-none">
+                            (edit)
+                        </span>
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        class="btn-glow w-full max-w-md mx-auto py-4 px-8 rounded-full bg-gradient-to-r from-pastel-400 via-pastel-500 to-blush-500 text-white font-semibold text-xs tracking-widest uppercase transition-all duration-300 hover:scale-[1.02] shadow-md flex items-center justify-center gap-3 group"
+                    >
+                        <span>Start Journey</span>
+                        <i class="fa-solid fa-arrow-right-long text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- STEP 2: LONG LETTER CARD PAGE -->
+        <section id="step2" class="step-panel">
+            <div class="glass-card glass-card-glow p-6 md:p-10 rounded-3xl max-w-3xl w-full flex flex-col max-h-[82vh] relative border border-white/90">
+                
+                <!-- Card Header -->
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-pastel-200/80">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-envelope-open-text text-pastel-500 text-base"></i>
+                        <span class="font-semibold text-xs text-gray-500 uppercase tracking-wider">A Special Letter</span>
+                    </div>
+                </div>
+
+                <!-- Scrollable Content Box -->
+                <div class="overflow-y-auto custom-scrollbar pr-3 flex-1 mb-6">
+                    <h2 class="font-serif font-bold text-2xl md:text-3xl text-gray-800 mb-5 leading-snug">
+                        Dearest <span id="displayName" class="cute-shimmer font-bold">Princess</span>, ✨
+                    </h2>
+
+                    <!-- Display View -->
+                    <div id="letterDisplay" class="text-base md:text-lg text-gray-700 leading-relaxed space-y-4 font-normal">
+                        <p>
+                            Hi, I just want to tell you something that has been on my mind for a while now. 🥹 I don't really know how to start this or how to put everything into words, but I guess I just want to be honest with you for once and say the things that I should have said properly that night.
+
+<br><br>
+
+<span>I want to say sorry. I'm really sorry for the things I said to you, for being rude, and for the way I acted that night. 😔 Looking back at what happened, I realize how selfish I was. I let my feelings get the best of me, and instead of trying to understand the situation and how you might have felt, I ended up saying things that could have hurt you and made you feel like you needed to go away. I'm sorry for putting you in that position. You didn't deserve to be treated that way, especially by someone who genuinely cares about you. 💔</span>
+
+<br><br>
+
+<span>I know that saying sorry won't erase what happened, and I know that I can't just expect everything to be okay because I finally found the courage to explain myself. I just want you to know that I regret the way I handled things. I could have talked to you properly. I could have been more patient and understanding. I could have chosen my words better instead of letting my emotions speak for me. But I didn't, and that's something I have to take responsibility for. I'm not saying these things to make excuses for myself. I just want to acknowledge that I was wrong, and you deserved better from me that night. 😞</span>
+
+<br><br>
+
+<span>Maybe one of the things I struggled with the most was trying to understand my own feelings. It's not always easy for me to explain what goes on inside my head, especially when it comes to someone I genuinely like. Sometimes I don't know how to act, sometimes I overthink things, and sometimes I get scared of situations that I don't know how to handle. 🥺 But I know that none of those things give me the right to hurt someone else. I should have known better, and I'm sorry that I let my own struggles affect the way I treated you.</span>
+
+<br><br>
+
+<span>I hope you can understand where I'm coming from, even just a little. 🫂 I'm not asking you to agree with everything I feel, and I'm not expecting you to carry the weight of my emotions. I just hope you can understand that I'm also trying to figure things out in my own way. Having feelings for someone isn't always easy, especially when you're trying to find a way to handle those feelings without making things uncomfortable for the other person. Sometimes you want to stay close, but at the same time, you don't want to cross any boundaries. Sometimes you want to talk, but you hesitate because you're afraid that things might become awkward. And sometimes, you care so much that you end up not knowing what the right thing to do is. 😔</span>
+
+<br><br>
+
+<span>But despite all of that, I want you to know that I'm not here to force anything between us. I'm not here to reconnect things that you don't want to reconnect, and I'm not here to make our situation more complicated than it already is. I don't want to make things awkward for you, and I don't want to become another thing that you have to worry about when you already have your own responsibilities, priorities, and things to take care of in life. I know that you have your own world outside of me, your own problems to solve, your own goals to reach, and your own days when you probably just want to rest and have peace. I respect that, and I never want my feelings to become something that takes that peace away from you. 🤍</span>
+
+<br><br>
+
+<span>I just hope that someday, if you're comfortable with it, we can be okay with each other. Even if it's just as friends, even if things are different from what I might have imagined before, I hope we can reach a point where we can talk without feeling uncomfortable or having to think too much about what happened. I know that being friends with someone you genuinely like can be difficult sometimes, because you have to learn how to handle your feelings while respecting what that person wants and needs. I'm still learning how to do that. I'm not going to pretend that it's easy for me, but I also don't want my feelings to become a reason for me to lose the chance to appreciate you as a person. 🥹</span>
+
+<br><br>
+
+<span>Because honestly, I'm glad I met you. ❤️ And I mean that more than you probably realize. Out of all the people I could have met, somehow our paths crossed, and I'm thankful that they did. You became someone I got to know, someone I got to appreciate, and someone who made me feel things that I can't always explain properly. Maybe you don't even realize how much of an impact you've had on me, but there are things about you that I'll always be glad I got to experience. The conversations, the little moments, the times when we got along, and even the moments that might seem ordinary to you are things that I can look back on and appreciate. 🥹💗</span>
+
+<br><br>
+
+<span>I'm glad I got to know a little part of who you are. I'm glad I got the chance to talk to you, to laugh with you, and to have moments where I could simply be happy because you were there. I don't think you have to do something extraordinary to become someone worth appreciating. Sometimes, just being yourself is already enough to leave an impression on someone. And you did that without even having to try. You became someone I was happy to hear from, someone whose presence I appreciated, and someone I genuinely wished good things for, even during the times when I didn't know how to express those feelings the right way. 🫶🏻</span>
+
+<br><br>
+
+<span>And if there's one thing I wish I had done differently, it's that I wish I had appreciated those moments without allowing my own fears and emotions to ruin them. I wish I had been more mature about things. I wish I had understood sooner that caring about someone also means knowing how to respect their space, their decisions, and their peace of mind. It's not just about wanting to be close to someone. It's also about understanding that they have a life of their own, and they deserve to live it without feeling pressured to meet someone else's expectations. 🤍</span>
+
+<br><br>
+
+<span>I'm sorry if I ever made you feel like you had to choose between staying and leaving just because of how I felt. I'm sorry if my words made you think that being around me would only lead to more problems. That was never how I wanted you to feel. I never wanted you to associate me with discomfort or pressure. If I could take back the things I said that night, I would, but I know I can't change the past. All I can do now is learn from it and make sure that the way I treat people becomes better than the way I handled things before. 😞💔</span>
+
+<br><br>
+
+<span>I also want you to know that you don't owe me anything because I'm saying all of this. You don't have to give me the response I might hope for, and you don't have to pretend that everything is okay if it isn't. You don't even have to find the perfect words to say to me. I would rather you be honest with yourself and with me than feel like you need to say something just to make me feel better. I care about you, and because I care about you, I want you to have the freedom to feel whatever you genuinely feel. 🫂</span>
+
+<br><br>
+
+<span>Maybe the hardest part about caring for someone is accepting that you can't always have things happen the way you want them to. Sometimes you have to accept that a person can be important to you without knowing what place you'll have in their life. Sometimes you have to appreciate someone without expecting anything in return. And sometimes, you have to learn to be thankful that you met them, even when you don't know what will happen next. I'm slowly learning that, and I know I still have a lot to learn. 🥺</span>
+
+<br><br>
+
+<span>But I hope you never think that meeting you was something I regret, because it isn't. Not even a little. ❤️ Even with what happened, I'm still thankful that I got to know you. I don't want one bad night to erase every good thing I came to appreciate about you. I don't want the last thing you remember about me to be the person who got upset, said hurtful things, and made the situation difficult. I hope that, in time, you'll also remember that there was someone who genuinely appreciated you, who was happy to have met you, and who is trying to become a better person because he realized that his feelings should never be an excuse to hurt someone he cares about.</span>
+
+<br><br>
+
+<span>You deserve kindness, understanding, and peace. 🤍 You deserve people who can listen to you without immediately judging you, people who can understand your side even when they don't completely agree, and people who can respect your boundaries without making you feel guilty about them. I hope I can learn to be that kind of person, not just toward you but toward the people who matter to me. You don't have to teach me how to do that, and you don't have to wait for me to figure everything out. That's something I need to work on myself.</span>
+
+<br><br>
+
+<span>And please don't feel bad about focusing on yourself and the things you need to do. I know life doesn't stop just because something happens between two people. You still have your own dreams, your responsibilities, your worries, and your own reasons for doing the things you do. I genuinely hope you get to accomplish the things you want in life. I hope you have days that make you smile for no particular reason. I hope you find people who make you feel safe enough to be yourself. I hope that even on the days when everything feels tiring, you still find little reasons to keep going. You deserve those things, and I'll always be glad to see you doing well, whether I'm close enough to witness it or not. 🌷🫶🏻</span>
+
+<br><br>
+
+<span>I don't know what you think of me now, and I won't pretend that I'm not a little scared of the answer. But I don't want that fear to stop me from giving you the apology you deserve. You mattered enough for me to reflect on what happened, and you matter enough for me to admit that I was wrong. I would rather be honest about my mistakes than act as if nothing happened. I would rather learn from this than keep repeating the same things and hurting people because I don't know how to handle my own feelings. 🥹</span>
+
+<br><br>
+
+<span>So, from the bottom of my heart, I'm sorry. I'm sorry for that night, for my words, for my selfishness, and for the possibility that I made you feel like you had to walk away just to protect your peace. You didn't deserve that. I hope that someday you can look back at what happened without feeling hurt by it anymore. And if you ever remember me, I hope you can remember me with a little kindness, knowing that even though I didn't handle everything perfectly, my appreciation for you was real. ❤️‍🩹</span>
+
+<br><br>
+
+<span>Thank you for being someone I got to meet. Thank you for the moments we shared, even the little ones that you might not remember anymore. Thank you for being part of a chapter in my life that I'll always be glad happened. You don't have to do anything special to deserve good things, and you don't have to stay in anyone's life just because they want you to. I hope you always remember that your happiness matters, your comfort matters, and your choices matter too. 🤍</span>
+
+<br><br>
+
+<span>And if things between us never become what I once hoped they could be, I will still be thankful that I met you. I won't say that I'll never feel sad about it, because I would be lying if I said that. But I also know that appreciating someone means being grateful for the time you were given, instead of being angry about the things you couldn't keep. I don't want to turn the good memories into something painful. I want to learn how to appreciate them for what they were and carry the lessons with me as I continue growing. 🥺</span>
+
+<br><br>
+
+<span>I hope life is gentle with you. 🌷 I hope you never have to question whether you're worth caring about, because you are. I hope you find happiness in the things you're working hard for, and I hope you meet people who remind you that you don't have to be perfect to be loved and appreciated. You can have bad days, make mistakes, feel confused, and need time for yourself. You can change your mind, set boundaries, and choose what's best for you. None of those things make you less deserving of kindness.</span>
+
+<br><br>
+
+<span>And lastly, I hope you know that I'm genuinely happy that our paths crossed. I'm sorry that I let my selfishness get in the way of that, but I'm thankful that I can still learn something from what happened. I can't promise that I'll always know the right words to say or that I'll never make mistakes again, but I can promise myself that I'll try to become more understanding, more patient, and more careful with the feelings of the people I care about. 🫶🏻</span>
+
+<br><br>
+
+<span>Take care of yourself, okay? 🥹🤍 Don't forget to rest when you need to, to smile when something makes you happy, and to give yourself the same understanding that you give to other people. I hope good things find you, even on the days when you're not expecting them. And whatever happens from here, I'm glad I met you. I'm glad I got to know you, and I'm sorry for the times I made things harder than they needed to be.</span>
+
+<br><br>
+
+<span>You don't have to give me another chance to prove that I'm sorry. I just hope that one day, when you think about all of this, you'll know that this apology came from a genuine place. I never wanted to make you feel like you weren't free to choose what's best for you. I just didn't know how to handle what I felt, and I'm learning that caring for someone also means giving them the space to be happy, even when you don't know what that means for you. ❤️‍🩹</span>
+
+<br><br>
+
+<span>I'm really sorry, and I'm genuinely thankful for you. No pressure, no expectations, and no need to force anything. I just wanted you to know that you were appreciated, that meeting you meant something to me, and that despite everything, I still wish you nothing but happiness. Please be happy, take care of yourself, and never think that you have to become someone else just to be worthy of being appreciated. 🫂💗</span>
+
+<br><br>
+
+<span>I'm glad I met you. I always will be. And I'm sorry for that night. 🥹❤️</span>
+
+                    </div>
+
+                    <!-- Editable View -->
+                    <textarea 
+                        id="letterEditor" 
+                        class="hidden w-full h-64 p-4 rounded-2xl romantic-input text-base text-gray-800 leading-relaxed resize-none focus:outline-none"
+                    ></textarea>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="flex justify-between items-center pt-4 border-t border-pastel-200/80">
+                    <button 
+                        onclick="goToStep(1)" 
+                        class="px-6 py-2.5 rounded-full bg-white/80 hover:bg-white text-gray-600 text-xs font-semibold tracking-widest uppercase transition-all duration-300 border border-pastel-200 shadow-sm flex items-center gap-2"
+                    >
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                        <span>Back</span>
+                    </button>
+
+                    <button 
+                        onclick="goToStep(3)" 
+                        class="btn-glow px-8 py-3 rounded-full bg-gradient-to-r from-pastel-400 to-pastel-500 text-white font-semibold text-xs tracking-widest uppercase transition-all duration-300 hover:scale-[1.02] shadow-md flex items-center gap-2 group"
+                    >
+                        <span>Next Melody</span>
+                        <i class="fa-solid fa-heart text-[10px] group-hover:scale-125 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 3: LYRIC STREAM / VISUALIZER PAGE -->
+        <section id="step3" class="step-panel">
+            <div class="glass-card glass-card-glow p-6 md:p-10 rounded-3xl max-w-4xl w-full flex flex-col justify-between min-h-[520px] relative overflow-hidden border border-white/90">
+                
+                <div class="flex justify-between items-center z-10">
+                    <div class="flex items-center gap-2 bg-white/70 px-3.5 py-1 rounded-full border border-pastel-200">
+                        <span class="w-2 h-2 rounded-full bg-pastel-500 animate-ping"></span>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-pastel-600">Dynamic Lyric Player</span>
+                    </div>
+                    <span id="lyricProgress" class="text-xs font-semibold text-gray-600 bg-white/80 px-3.5 py-1 rounded-full border border-pastel-200 shadow-sm">
+                        Phrase 1 / 4
+                    </span>
+                </div>
+
+                <!-- Main Subtitle Display Area -->
+                <div class="my-auto py-10 text-center z-10 flex flex-col items-center justify-center min-h-[200px]">
+                    <div id="lyricContainer" class="lyric-text lyric-active max-w-2xl px-4">
+                        <p id="lyricSubtitle" class="font-serif font-bold text-2xl md:text-4xl text-gray-800 leading-snug cute-shimmer mb-3">
+                            "You are my favorite thought in every single day..."
+                        </p>
+                        <span id="lyricCaption" class="block text-xs font-semibold tracking-widest text-pastel-500 uppercase">
+                            - Romantic Melody
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Lyric Controls & Timeline -->
+                <div class="z-10 space-y-5">
+                    <!-- Progress Bar Track -->
+                    <div class="w-full bg-pastel-200/70 h-2.5 rounded-full overflow-hidden cursor-pointer shadow-inner" onclick="seekLyric(event)">
+                        <div id="lyricProgressBar" class="bg-gradient-to-r from-pastel-400 via-pastel-500 to-softgold-400 h-full w-1/4 transition-all duration-500 rounded-full"></div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <button onclick="prevLyric()" class="w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-600 border border-pastel-200 flex items-center justify-center transition-all shadow-sm">
+                                <i class="fa-solid fa-backward-step text-xs"></i>
+                            </button>
+                            <button id="playPauseLyricBtn" onclick="toggleLyricAutoplay()" class="w-11 h-11 rounded-full bg-pastel-500 hover:bg-pastel-600 text-white flex items-center justify-center transition-all shadow-md hover:scale-105">
+                                <i id="playPauseIcon" class="fa-solid fa-pause text-sm"></i>
+                            </button>
+                            <button onclick="nextLyric()" class="w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-600 border border-pastel-200 flex items-center justify-center transition-all shadow-sm">
+                                <i class="fa-solid fa-forward-step text-xs"></i>
+                            </button>
+                        </div>
+
+                        <!-- Speed Toggle -->
+                        <button onclick="cycleSpeed()" class="text-xs font-semibold bg-white/90 px-3.5 py-1.5 rounded-full border border-pastel-200 text-gray-600 hover:text-pastel-600 transition-colors shadow-sm">
+                            Speed: <span id="speedLabel" class="text-pastel-600 font-bold">4s</span>
+                        </button>
+
+                        <!-- Nav Buttons -->
+                        <div class="flex items-center gap-2.5">
+                            <button onclick="goToStep(2)" class="px-5 py-2 rounded-full bg-white/90 hover:bg-white text-gray-600 text-xs font-semibold tracking-widest uppercase transition-all border border-pastel-200 shadow-sm">
+                                Back
+                            </button>
+                            <button onclick="goToStep(4); triggerCelebration();" class="btn-glow px-6 py-2 rounded-full bg-gradient-to-r from-pastel-400 to-pastel-500 text-white text-xs font-bold tracking-widest uppercase transition-all hover:scale-105 shadow-md">
+                                Finish 🌸
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 4: WRITE-BACK & CELEBRATION PAGE -->
+        <section id="step4" class="step-panel">
+            <div class="glass-card glass-card-glow p-6 md:p-10 rounded-3xl max-w-2xl w-full text-center relative overflow-hidden border border-white/90">
+                
+                <div class="mb-4 inline-flex p-4 rounded-full bg-pastel-100 border border-pastel-200 text-pastel-500 shadow-md animate-bounce">
+                    <i class="fa-solid fa-heart-circle-check text-2xl md:text-3xl"></i>
+                </div>
+
+                <h2 class="font-serif font-bold text-2xl md:text-3xl text-gray-800 mb-2 cute-shimmer">
+                    Write Back To Me 💌
+                </h2>
+
+                <!-- Customizable Sender Prompt Note -->
+                <div class="relative group bg-white/90 p-4 rounded-2xl border border-pastel-200 mb-4 text-left shadow-sm">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold text-pastel-500 uppercase tracking-widest flex items-center gap-1">
+                            <i class="fa-solid fa-sparkles text-[10px]"></i> A Note From Me
+                        </span>
+                        <button onclick="addPresetReplyText()" class="text-[11px] font-semibold text-pastel-600 hover:text-pastel-700 transition-colors bg-pastel-100 px-2.5 py-1 rounded-lg">
+                            + Add generated text
+                        </button>
+                    </div>
+                    
+                    <p class="text-xs md:text-sm text-gray-700 font-medium leading-relaxed italic">
+                        "Thank you for making time to read this and if you want to reach out you may reach out to me using this textfield send a message to me hehe mas maganda kung galing mismo sa heart mo."
+                    </p>
+                </div>
+
+                <!-- Cute Spacious Interactive Message Textarea -->
+                <form id="replyForm" onsubmit="event.preventDefault(); handleSendReply();" class="space-y-4 text-left">
+                    <div class="relative">
+                        <textarea 
+                            id="replyMessageInput" 
+                            rows="4"
+                            placeholder="Type your message, sweet memory, or thoughts here... 🌸"
+                            maxlength="2000"
+                            oninput="updateCharCount(this)"
+                            class="romantic-input w-full p-4 rounded-2xl text-sm md:text-base text-gray-800 leading-relaxed resize-none focus:outline-none shadow-inner"
+                        ></textarea>
+                        
+                        <div class="absolute bottom-3 right-4 text-[10px] md:text-xs font-semibold text-pastel-400 bg-white/90 px-2.5 py-0.5 rounded-full border border-pastel-200 shadow-sm pointer-events-none">
+                            <span id="charCount">0</span> / 2000
+                        </div>
+                    </div>
+
+                    <!-- Direct Send & Alternative Action Buttons -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <!-- Direct EmailJS Send Button -->
+                        <button 
+                            type="button"
+                            id="directSendBtn"
+                            onclick="handleSendReply()" 
+                            class="btn-glow py-3.5 px-4 rounded-2xl bg-gradient-to-r from-pastel-400 to-pastel-500 text-white font-semibold text-xs tracking-wider uppercase transition-all duration-300 hover:scale-[1.02] shadow-md flex items-center justify-center gap-2 col-span-1 sm:col-span-2"
+                        >
+                            <i id="directSendIcon" class="fa-solid fa-heart text-xs"></i>
+                            <span id="directSendText">Send Directly to Me 💖</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Navigation & Replay Actions -->
+                <div class="flex justify-between items-center pt-5 mt-5 border-t border-pastel-200/70">
+                    <button 
+                        onclick="goToStep(3)" 
+                        class="px-5 py-2.5 rounded-full bg-white/80 hover:bg-white text-gray-600 text-xs font-semibold tracking-widest uppercase transition-all duration-300 border border-pastel-200 shadow-sm flex items-center gap-1.5"
+                    >
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                        <span>Lyrics</span>
+                    </button>
+
+                    <button 
+                        onclick="restartJourney()" 
+                        class="px-5 py-2.5 rounded-full bg-white/80 hover:bg-white text-pastel-600 text-xs font-semibold tracking-widest uppercase transition-all duration-300 border border-pastel-200 shadow-sm flex items-center gap-1.5"
+                    >
+                        <i class="fa-solid fa-rotate-left text-[10px]"></i>
+                        <span>Replay</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SUCCESS GIF ALERT MODAL -->
+    <div id="alertModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div id="alertModalCard" class="glass-card glass-card-glow p-6 md:p-8 rounded-3xl max-w-sm w-full text-center relative overflow-hidden border border-white/90 modal-enter transition-all duration-300 transform">
+            <!-- Decorative Accent -->
+            <div class="absolute -top-12 -right-12 w-28 h-28 bg-pastel-300/50 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-12 -left-12 w-28 h-28 bg-softgold-300/50 rounded-full blur-xl"></div>
+
+            <!-- Cute Animated GIF Container -->
+            <div class="relative mb-4 mx-auto w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden border-2 border-pastel-200 shadow-md bg-pastel-50 flex items-center justify-center">
+                <img 
+                    id="modalGif" 
+                    src="cat.gif" 
+                    alt="Cute Love GIF" 
+                    class="w-full h-full object-cover"
+                />
+            </div>
+
+            <h3 id="modalTitle" class="font-serif font-bold text-xl md:text-2xl text-gray-800 mb-1 cute-shimmer">
+                Message Sent! 💖
+            </h3>
+
+            <p id="modalBody" class="text-xs md:text-sm text-gray-600 font-medium mb-6 leading-relaxed">
+                Your sweet message has been safely delivered to my heart! Thank you for making my day brighter. ✨
+            </p>
+
+            <button 
+                onclick="closeAlertModal()" 
+                class="btn-glow w-full py-3 px-6 rounded-full bg-gradient-to-r from-pastel-400 via-pastel-500 to-blush-500 text-white font-bold text-xs tracking-widest uppercase transition-all duration-300 hover:scale-[1.03] shadow-md flex items-center justify-center gap-2"
+            >
+                <i class="fa-solid fa-heart text-xs"></i>
+                <span>Yay! So Sweet 💕</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
+        <div class="bg-white/95 backdrop-blur-md border border-pastel-300 text-gray-800 px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-pastel-100 flex items-center justify-center text-pastel-500">
+                <i id="toastIcon" class="fa-solid fa-check text-sm"></i>
+            </span>
+            <span id="toastMessage" class="text-xs md:text-sm font-semibold text-gray-700">Copied to clipboard! 💖</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-20 w-full px-6 py-4 text-center text-xs text-pastel-500/80 font-medium">
+        Designed by Angelo for Renlyn 🌸
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        // =========================================================================
+        // 💌 EMAILJS CONFIGURATION
+        // =========================================================================
+        const EMAILJS_SERVICE_ID = "service_qyeew91";
+        const EMAILJS_TEMPLATE_ID = "template_jh28lwk";
+        const EMAILJS_PUBLIC_KEY = "27CEg_utr_uw6M2xQ";
+
+        // Initialize EmailJS on load
+        (function() {
+            if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY) {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+        })();
+
+        // GIF URL (Easily replace this URL with your favorite Tenor/Giphy image link)
+        const CUTE_ALERT_GIF_URL = "cat.gif";
+
+        // State variables
+        let currentStep = 1;
+        let isEditingLetter = false;
+        let isAudioPlaying = false;
+        let currentLyricIndex = 0;
+        let isLyricAutoplay = true;
+        let lyricTimer = null;
+        let lyricIntervalSpeed = 4000;
+
+        
+const lyricsList = [
+    {
+        text: "I don't know if you ever think of me at night, but I want you to know that I still think of you every single night, even when I try not to.",
+        caption: "Things ive been thinking"
+    },
+    {
+        text: "Sometimes, I wonder if you miss me too, even just a little. Do I ever cross your mind the way you cross mine? I guess I'll never really know, but a part of me still hopes you do.",
+        caption: "Things ive been thinking"
+    },
+    {
+        text: "Maybe I can't have you the way I wish I could, and maybe things won't turn out the way I once hoped. But even with that, I don't regret meeting you, not even for a second.",
+        caption: "Things ive been thinking"
+    },
+    {
+        text: "Even if I only got to be part of your life for a little while, I'm happy our paths crossed. You became someone I'll remember with a smile, someone who made a short chapter of my life feel special. And if all I can do now is wish you happiness from afar, then I'll do that. Thank you for being someone I'll always be glad I met. 🫂",
+        caption: "Things ive been thinking"
+    }
+];
+
+        window.onload = function() {
+            initParticles();
+            updateLyricDisplay();
+            startLyricAutoplay();
+            setupAudio();
+        };
+
+        // Navigation between steps
+        function goToStep(stepNum) {
+            document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+            const target = document.getElementById(`step${stepNum}`);
+            if (target) {
+                target.classList.add('active');
+                currentStep = stepNum;
+            }
+
+            // Sync user name
+            const herName = document.getElementById('herNameInput').value.trim() || 'Princess';
+            document.getElementById('displayName').textContent = herName;
+
+            if (stepNum === 3) {
+                resetLyricTimer();
+            }
+        }
+
+        // Lyric controls
+        function updateLyricDisplay() {
+            const container = document.getElementById('lyricContainer');
+            const subtitle = document.getElementById('lyricSubtitle');
+            const caption = document.getElementById('lyricCaption');
+            const progressText = document.getElementById('lyricProgress');
+            const progressBar = document.getElementById('lyricProgressBar');
+
+            container.classList.remove('lyric-active');
+            container.classList.add('lyric-exit');
+
+            setTimeout(() => {
+                const currentData = lyricsList[currentLyricIndex];
+                subtitle.textContent = `"${currentData.text}"`;
+                caption.textContent = `- ${currentData.caption}`;
+                progressText.textContent = `Phrase ${currentLyricIndex + 1} / ${lyricsList.length}`;
+                
+                const pct = ((currentLyricIndex + 1) / lyricsList.length) * 100;
+                progressBar.style.width = `${pct}%`;
+
+                container.classList.remove('lyric-exit');
+                container.classList.add('lyric-enter');
+
+                requestAnimationFrame(() => {
+                    container.classList.remove('lyric-enter');
+                    container.classList.add('lyric-active');
+                });
+            }, 300);
+        }
+
+        function nextLyric() {
+            currentLyricIndex = (currentLyricIndex + 1) % lyricsList.length;
+            updateLyricDisplay();
+            resetLyricTimer();
+        }
+
+        function prevLyric() {
+            currentLyricIndex = (currentLyricIndex - 1 + lyricsList.length) % lyricsList.length;
+            updateLyricDisplay();
+            resetLyricTimer();
+        }
+
+        function seekLyric(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percentage = clickX / rect.width;
+            currentLyricIndex = Math.floor(percentage * lyricsList.length);
+            if(currentLyricIndex >= lyricsList.length) currentLyricIndex = lyricsList.length - 1;
+            if(currentLyricIndex < 0) currentLyricIndex = 0;
+            updateLyricDisplay();
+            resetLyricTimer();
+        }
+
+        function toggleLyricAutoplay() {
+            isLyricAutoplay = !isLyricAutoplay;
+            const icon = document.getElementById('playPauseIcon');
+            if (isLyricAutoplay) {
+                icon.className = 'fa-solid fa-pause text-sm';
+                startLyricAutoplay();
+            } else {
+                icon.className = 'fa-solid fa-play text-sm';
+                stopLyricAutoplay();
+            }
+        }
+
+        function startLyricAutoplay() {
+            stopLyricAutoplay();
+            if (isLyricAutoplay) {
+                lyricTimer = setInterval(() => {
+                    currentLyricIndex = (currentLyricIndex + 1) % lyricsList.length;
+                    updateLyricDisplay();
+                }, lyricIntervalSpeed);
+            }
+        }
+
+        function stopLyricAutoplay() {
+            if (lyricTimer) {
+                clearInterval(lyricTimer);
+                lyricTimer = null;
+            }
+        }
+
+        function resetLyricTimer() {
+            if (isLyricAutoplay) {
+                startLyricAutoplay();
+            }
+        }
+
+        function cycleSpeed() {
+            const speeds = [3000, 4000, 6000];
+            const labels = ['3s', '4s', '6s'];
+            const idx = speeds.indexOf(lyricIntervalSpeed);
+            const nextIdx = (idx + 1) % speeds.length;
+            lyricIntervalSpeed = speeds[nextIdx];
+            document.getElementById('speedLabel').textContent = labels[nextIdx];
+            resetLyricTimer();
+        }
+
+        // Audio controls
+        const bgAudio = document.getElementById('bgAudio');
+
+        function setupAudio() {
+            // Prepared for user trigger
+        }
+
+        function toggleAudioPlayback() {
+            if (isAudioPlaying) {
+                pauseAudio();
+            } else {
+                playAudio();
+            }
+        }
+
+        function playAudio() {
+            bgAudio.play().then(() => {
+                isAudioPlaying = true;
+                document.getElementById('audioIcon').className = 'fa-solid fa-volume-high text-pastel-600';
+                document.getElementById('audioStatusText').textContent = 'Playing';
+                document.getElementById('equalizer').classList.remove('opacity-60');
+                document.getElementById('equalizer').classList.add('animate-pulse');
+            }).catch(err => {
+                showToast("Click anywhere on the screen to enable audio! 🎶", "fa-music");
+            });
+        }
+
+        function pauseAudio() {
+            bgAudio.pause();
+            isAudioPlaying = false;
+            document.getElementById('audioIcon').className = 'fa-solid fa-volume-xmark text-gray-400';
+            document.getElementById('audioStatusText').textContent = 'Muted';
+            document.getElementById('equalizer').classList.add('opacity-60');
+            document.getElementById('equalizer').classList.remove('animate-pulse');
+        }
+
+        // Step 4 Reply Form Handlers
+        function updateCharCount(textarea) {
+            document.getElementById('charCount').textContent = textarea.value.length;
+        }
+
+        function addPresetReplyText() {
+            const name = document.getElementById('herNameInput').value.trim() || 'Cutie Princess';
+            const text = `Hi! I received your special letter and loved every single part of it. Thank you for making this cute journey for me! ❤️ - ${name}`;
+            const input = document.getElementById('replyMessageInput');
+            input.value = text;
+            updateCharCount(input);
+            showToast("Added cute preset text! 💕", "fa-heart");
+        }
+
+        async function handleSendReply() {
+            const replyText = document.getElementById('replyMessageInput').value.trim();
+            const herName = document.getElementById('herNameInput').value.trim() || 'Cutie Princess';
+
+            if (!replyText) {
+                showToast("Please write a message first! 🌸", "fa-heart");
+                return;
+            }
+
+            const btn = document.getElementById('directSendBtn');
+            const btnText = document.getElementById('directSendText');
+            const btnIcon = document.getElementById('directSendIcon');
+
+            // Loading State
+            btn.disabled = true;
+            btnText.textContent = "Sending with love... ✨";
+            btnIcon.className = "fa-solid fa-spinner fa-spin text-xs";
+
+            // Template parameters matching standard EmailJS template variables
+            const templateParams = {
+                from_name: herName,
+                to_email: 'michaelkelangelo@gmail.com',
+                message: replyText,
+                reply_to: herName,
+                time: new Date().toLocaleString()
+            };
+
+            try {
+                // Pass public key directly into send call as well for failsafe execution
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY);
+                
+                triggerCelebration();
+                openAlertModal(
+                    "Message Sent Directly! 💖",
+                    `Your message was delivered straight to my heart! Thank you so much, ${herName}! ✨`,
+                    CUTE_ALERT_GIF_URL
+                );
+                btnText.textContent = "Sent Successfully! 💕";
+                btnIcon.className = "fa-solid fa-check text-xs";
+            } catch (err) {
+                console.error("EmailJS error:", err);
+                showToast("Failed to send: " + (err.text || err.message || "Check template configuration"), "fa-triangle-exclamation");
+                btnText.textContent = "Send Directly to Me 💖";
+                btnIcon.className = "fa-solid fa-heart text-xs";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Custom GIF Alert Modal Controls
+        function openAlertModal(title, message, gifUrl) {
+            const modal = document.getElementById('alertModal');
+            const card = document.getElementById('alertModalCard');
+            const titleEl = document.getElementById('modalTitle');
+            const bodyEl = document.getElementById('modalBody');
+            const gifEl = document.getElementById('modalGif');
+
+            titleEl.textContent = title;
+            bodyEl.textContent = message;
+            if (gifUrl) gifEl.src = gifUrl;
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            card.classList.remove('modal-enter');
+            card.classList.add('modal-active');
+        }
+
+        function closeAlertModal() {
+            const modal = document.getElementById('alertModal');
+            const card = document.getElementById('alertModalCard');
+
+            card.classList.remove('modal-active');
+            card.classList.add('modal-enter');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function showToast(msg, iconClass = "fa-check") {
+            const toast = document.getElementById('toastNotification');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = msg;
+            toastIcon.className = `fa-solid ${iconClass} text-sm`;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }, 3200);
+        }
+
+        function triggerCelebration() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 85,
+                    spread: 90,
+                    origin: { y: 0.6 },
+                    colors: ['#ff8ba7', '#ffdbe4', '#fde047', '#ffffff', '#ff6288']
+                });
+            }
+        }
+
+        function restartJourney() {
+            currentLyricIndex = 0;
+            updateLyricDisplay();
+            goToStep(1);
+        }
+
+        // Particle Heart Canvas Animation
+        function initParticles() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = [];
+            const particleCount = Math.min(Math.floor(width / 18), 35);
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = height + Math.random() * 60;
+                    this.size = Math.random() * 3.5 + 1.5;
+                    this.speedY = Math.random() * 0.7 + 0.3;
+                    this.speedX = (Math.random() - 0.5) * 0.4;
+                    this.opacity = Math.random() * 0.55 + 0.25;
+                    this.isHeart = Math.random() > 0.4;
+                    this.color = Math.random() > 0.3 ? 'rgba(255, 139, 167, ' : 'rgba(253, 224, 71, ';
+                }
+
+                update() {
+                    this.y -= this.speedY;
+                    this.x += this.speedX;
+                    if (this.y < -20) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.fillStyle = this.color + this.opacity + ')';
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = 'rgba(255, 184, 203, 0.5)';
+
+                    if (this.isHeart) {
+                        ctx.translate(this.x, this.y);
+                        ctx.beginPath();
+                        const h = this.size * 2;
+                        ctx.moveTo(0, 0);
+                        ctx.bezierCurveTo(-h/2, -h/2, -h, h/3, 0, h);
+                        ctx.bezierCurveTo(h, h/3, h/2, -h/2, 0, 0);
+                        ctx.fill();
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+</body>
+</html>
